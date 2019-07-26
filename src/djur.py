@@ -1,5 +1,11 @@
 # coding: utf-8
 
+def count(db):
+    if len(db) == 1:
+        return 1
+    else:
+        return count(db[2]) + count(db[3])
+
 
 def djur(db, _input=None, _print=None):
     _inp = _input or input
@@ -9,10 +15,12 @@ def djur(db, _input=None, _print=None):
         ans = _inp().lower()
         return ans[0] if len(ans) > 0 else ' '
 
+    antal = count(db)
+
     prn = _print or print
     prn("Välkommen till GISSA DJUR!")
     prn("--------------------------")
-    prn("Jag känner till 2 djur.")
+    prn(f"Jag känner till {antal} djur.")
     while True:
         prn("(S)pela eller (A)vsluta?")
         ans = inp()
@@ -33,11 +41,11 @@ def djur(db, _input=None, _print=None):
                 if ans not in "jn":
                     prn("Jag förstår bara j och n, svenska alltså!")
                     continue
-                if ans == 'j':
+                if ans == pos[1]:
                     pos = pos[2]
                 else:
                     pos = pos[3]
-            djur = pos
+            djur = pos[0]
             prn(f"Jag gissar att du tänkte på {djur}!")
             prn("Hade jag rätt? (J)a eller (N)ej?")
             ans = inp()
@@ -47,3 +55,11 @@ def djur(db, _input=None, _print=None):
             prn(f"Jag förstår inte '{ans}'!")
 
 
+if __name__ == '__main__':
+    print("\n" * 100)
+    db = (
+        'Kan djuret simma', 'j',
+        ('gädda',),
+        ('Krälar djuret', 'n', ('örn',), ('orm',))
+    )
+    djur(db)

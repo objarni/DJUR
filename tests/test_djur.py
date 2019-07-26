@@ -4,16 +4,16 @@ from pprint import pprint
 from src.djur import djur
 
 
-def test_approval_test_game_correct_guess():
+def test_approval_test_game_correct_guesses():
     got = []
 
     db = (
         'Kan djuret simma', 'j',
-        ('gädda'),
-        ('örn')
+        ('gädda',),
+        ('Krälar djuret', 'n', ('örn',), ('orm',))
     )
 
-    fake_answers = ['spela', 'q', 'K', 'y', 'j', 'j', 'a']
+    fake_answers = ['spela', 'q', 'K', 'y', 'j', 'j', 'S', 'k', 'n', 'j', 'j', 'a']
     def fake_input():
         next_answer = fake_answers.pop(0)
         got.append(f"INP {next_answer}")
@@ -28,7 +28,7 @@ def test_approval_test_game_correct_guess():
     expected = [
         "PRN Välkommen till GISSA DJUR!",
         "PRN --------------------------",
-        "PRN Jag känner till 2 djur.",
+        "PRN Jag känner till 3 djur.",
         "PRN (S)pela eller (A)vsluta?",
         "INP spela",
         "PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!",
@@ -43,6 +43,20 @@ def test_approval_test_game_correct_guess():
         "PRN Kan djuret simma - (J)a eller (N)ej?",
         "INP j",
         "PRN Jag gissar att du tänkte på gädda!",
+        "PRN Hade jag rätt? (J)a eller (N)ej?",
+        "INP j",
+        "PRN Vad kul! :D :D :D",
+        "PRN (S)pela eller (A)vsluta?",
+        "INP S",
+        "PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!",
+        "PRN När du tänkt klart, skriv (K)lart.",
+        "INP k",
+        "PRN OK då kör vi...",
+        "PRN Kan djuret simma - (J)a eller (N)ej?",
+        "INP n",
+        "PRN Krälar djuret - (J)a eller (N)ej?",
+        "INP j",
+        "PRN Jag gissar att du tänkte på orm!",
         "PRN Hade jag rätt? (J)a eller (N)ej?",
         "INP j",
         "PRN Vad kul! :D :D :D",
@@ -66,12 +80,12 @@ def test_approval_test_no_actual_game():
         got.append(f"PRN {msg}")
 
     # print, input
-    djur(None, _input=fake_input, _print=fake_print)
+    djur(('häst',), _input=fake_input, _print=fake_print)
     pprint(got)
     expected = [
         "PRN Välkommen till GISSA DJUR!",
         "PRN --------------------------",
-        "PRN Jag känner till 2 djur.",
+        "PRN Jag känner till 1 djur.",
         "PRN (S)pela eller (A)vsluta?",
         "INP q",
         "PRN Jag förstår inte 'q'!",
@@ -85,15 +99,7 @@ def test_approval_test_no_actual_game():
     assert expected == got
 
 
-if __name__ == '__main__':
-    db = (
-        'Kan djuret simma', 'j',
-        ('gädda'),
-        ('örn')
-    )
-    djur(db)
-
-
-# önskvärda features
+# önskvärda features |||
+## svar med både "n" och "j" som vänster krok
 # djurformattering exvis "GÄDDA " --> "gädda"
 # frågeformattering exvis "kan den flyga?" -> "Kan den flyga"
