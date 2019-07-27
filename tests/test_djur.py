@@ -31,9 +31,9 @@ PRN Tack för att du spelade!""".splitlines()
 def test_approval_test_game_correct_guesses():
 
     db = (
-        'Kan djuret simma', 'j',
+        'Kan djuret simma', True,
         ('gädda',),
-        ('Krälar djuret', 'n', ('örn',), ('orm',))
+        ('Krälar djuret', False, ('örn',), ('orm',))
     )
 
     expected = """\
@@ -80,12 +80,12 @@ PRN Tack för att du spelade!""".splitlines()
     fakes.verify_interaction_consumed()
 
 
-def _test_approval_test_game_incorrect_guess():
+def test_approval_test_game_incorrect_guess():
 
     db = [
-        'Kan djuret simma', 'j',
+        'Kan djuret simma', True,
         ['gädda'],
-        ['Krälar djuret', 'n', ['örn',], ['orm',]]
+        ['Krälar djuret', False, ['örn',], ['orm',]]
     ]
 
     expected = """\
@@ -114,17 +114,18 @@ PRN Försök igen:
 INP Har djuret ben?
 PRN OK, och för padda är svaret på frågan 'Har padda ben?' (J)a eller (N)ej?
 INP nej
-PRN Har jag fattat frågan och svaret rätt?
-PRN --- Har padda ben? ---
-PRN nej
-PRN (S)tämmer det eller blev det (F)el?
-PRN fel
-PRN Har jag fattat frågan och svaret rätt?
-PRN --- Har padda ben? ---
-PRN ja
-PRN (S)tämmer det eller blev det (F)el?
-INP s
-PRN Tack för att du lärt mig något om padda!
+PRN Denna fråga lär jag mig då:
+PRN   Har padda ben?
+PRN   Rätt svar: nej
+PRN Ser det rätt ut?
+INP nej
+PRN Hmm, tvärtom alltså?
+PRN Denna fråga lär jag mig då:
+PRN   Har padda ben?
+PRN   Rätt svar: ja
+PRN Ser det rätt ut?
+INP ja
+PRN Tack för att du lärt mig något om djuret padda!
 PRN Jag känner till 4 djur.
 PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
 INP avsluta

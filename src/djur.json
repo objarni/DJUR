@@ -1,0 +1,24 @@
+[
+  "Kan djuret simma",
+  true,
+  [
+    "g\u00e4dda"
+  ],
+  [
+    "Kr\u00e4lar djuret",
+    false,
+    [
+      "Kan djuret flyga?",
+      false,
+      [
+        "Schimpans"
+      ],
+      [
+        "\u00f6rn"
+      ]
+    ],
+    [
+      "orm"
+    ]
+  ]
+]
