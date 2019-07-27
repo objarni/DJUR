@@ -192,27 +192,26 @@ class InteractionTest:
 
 
 def test_filter_inp():
-    log = [
-        "INP j",
-        "PRN Vad kul! :D :D :D",
-        "PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.",
-        "INP S",
-        "PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!",
-        "PRN När du tänkt klart, skriv (K)lart.",
-        "INP k",
-        "PRN OK då kör vi...",
-        "PRN Kan djuret simma - (J)a eller (N)ej?",
-        "INP n",
-        "PRN Krälar djuret - (J)a eller (N)ej?",
-        "INP j",
-        "PRN Jag gissar att du tänkte på orm!",
-        "PRN Hade jag rätt? (J)a eller (N)ej?",
-        "INP j",
-        "PRN Vad kul! :D :D :D",
-        "PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.",
-        "INP a",
-        "PRN Tack för att du spelade!",
-    ]
+    log = """\
+INP j
+PRN Vad kul! :D :D :D
+PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
+INP S
+PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!
+PRN När du tänkt klart, skriv (K)lart.
+INP k
+PRN OK då kör vi...
+PRN Kan djuret simma - (J)a eller (N)ej?
+INP n
+PRN Krälar djuret - (J)a eller (N)ej?
+INP j
+PRN Jag gissar att du tänkte på orm!
+PRN Hade jag rätt? (J)a eller (N)ej?
+INP j
+PRN Vad kul! :D :D :D
+PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
+INP a
+PRN Tack för att du spelade!""".splitlines()
     assert InteractionTest.filter_inp(log) == [
         'j', 'S', 'k', 'n', 'j', 'j', 'a'
     ]
