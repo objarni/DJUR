@@ -89,8 +89,12 @@ def djur(db, _input=None, _print=None):
 
                 prn(f"Tack för att du lärt mig något om djuret {new_djur}!")
                 pos[:] = [new_question, ans, [new_djur], [djur]]
-                from pprint import pprint
-                pprint(db)
+                # from pprint import pprint
+                # pprint(db)
+                try:
+                    pathlib.Path(DBPATH).write_text(json.dumps(db, indent=2))
+                except:
+                    print(f"Kunde inte spara filen {DBPATH} :(")
         else:
             prn(f"Jag förstår inte '{ans}'!")
 
