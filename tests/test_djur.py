@@ -78,23 +78,13 @@ def test_filter_inp():
     ]
 
 
-def _test_approval_test_game_correct_guesses():
+def test_approval_test_game_correct_guesses():
 
     db = (
         'Kan djuret simma', 'j',
         ('gädda',),
         ('Krälar djuret', 'n', ('örn',), ('orm',))
     )
-
-    got = []
-
-    def fake_input():
-        next_answer = fake_answers.pop(0)
-        got.append(f"INP {next_answer}")
-        return next_answer
-
-    def fake_print(msg):
-        got.append(f"PRN {msg}")
 
     expected = [
         "PRN Välkommen till GISSA DJUR!",
@@ -135,28 +125,18 @@ def _test_approval_test_game_correct_guesses():
         "INP a",
         "PRN Tack för att du spelade!",
     ]
-    fake_answers = filter_inp(expected)
-    djur(db, _input=fake_input, _print=fake_print)
-    assert expected == got
+    fakes = Fakes(expected)
+    djur(db, _input=fakes.fake_input, _print=fakes.fake_print)
+    assert expected == fakes.get_actual()
 
 
-def _test_approval_test_game_incorrect_guess():
+def test_approval_test_game_incorrect_guess():
 
     db = (
         'Kan djuret simma', 'j',
         ('gädda',),
         ('Krälar djuret', 'n', ('örn',), ('orm',))
     )
-
-    got = []
-
-    def fake_input():
-        next_answer = fake_answers.pop(0)
-        got.append(f"INP {next_answer}")
-        return next_answer
-
-    def fake_print(msg):
-        got.append(f"PRN {msg}")
 
     expected = [
         "PRN Välkommen till GISSA DJUR!",
@@ -195,9 +175,9 @@ def _test_approval_test_game_incorrect_guess():
         "INP a",
         "PRN Tack för att du spelade!",
     ]
-    fake_answers = filter_inp(expected)
-    djur(db, _input=fake_input, _print=fake_print)
-    assert expected == got
+    fakes = Fakes(expected)
+    djur(db, _input=fakes.fake_input, _print=fakes.fake_print)
+    assert expected == fakes.get_actual()
 
 
 # önskvärda features |||
