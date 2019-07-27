@@ -22,7 +22,7 @@ def djur(db, _input=None, _print=None):
     prn("--------------------------")
     prn(f"Jag känner till {antal} djur.")
     while True:
-        prn("(S)pela eller (A)vsluta?")
+        prn("(S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.")
         ans = inp()
         if ans == 'a':
             prn("Tack för att du spelade!")
