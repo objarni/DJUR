@@ -6,41 +6,163 @@ from src.djur import djur
 
 def test_approval_test_no_actual_game():
 
-    expected = [
-        "PRN Välkommen till GISSA DJUR!",
-        "PRN --------------------------",
-        "PRN Jag känner till 1 djur.",
-        "PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.",
-        "INP q",
-        "PRN Jag förstår inte 'q'!",
-        "PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.",
-        "INP ",
-        "PRN Jag förstår inte ' '!",
-        "PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.",
-        "INP a",
-        "PRN Tack för att du spelade!"
-    ]
+    expected = """\
+PRN Välkommen till GISSA DJUR!
+PRN --------------------------
+PRN Jag känner till 1 djur.
+PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
+INP q
+PRN Jag förstår inte 'q'!
+PRN Jag känner till 1 djur.
+PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
+INP 
+PRN Jag förstår inte ' '!
+PRN Jag känner till 1 djur.
+PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
+INP a
+PRN Tack för att du spelade!""".splitlines()
 
-    fakes = Fakes(expected)
+    fakes = DjurFixture(expected)
     djur(('häst',), _input=fakes.fake_input, _print=fakes.fake_print)
     actual = fakes.get_actual()
 
-    assert expected == actual
+    # assert expected == actual
 
 
-class Fakes:
+def test_approval_test_game_correct_guesses():
+
+    db = (
+        'Kan djuret simma', 'j',
+        ('gädda',),
+        ('Krälar djuret', 'n', ('örn',), ('orm',))
+    )
+
+    expected = """\
+PRN Välkommen till GISSA DJUR!
+PRN --------------------------
+PRN Jag känner till 3 djur.
+PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
+INP spela
+PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!
+PRN När du tänkt klart, skriv (K)lart.
+INP q
+PRN Va? Skriv k när du är klar!
+INP K
+PRN OK då kör vi...
+PRN Kan djuret simma - (J)a eller (N)ej?
+INP y
+PRN Jag förstår bara j och n, svenska alltså!
+PRN Kan djuret simma - (J)a eller (N)ej?
+INP j
+PRN Jag gissar att du tänkte på gädda!
+PRN Hade jag rätt? (J)a eller (N)ej?
+INP j
+PRN Vad kul! :D :D :D
+PRN Jag känner till 3 djur.
+PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
+INP S
+PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!
+PRN När du tänkt klart, skriv (K)lart.
+INP k
+PRN OK då kör vi...
+PRN Kan djuret simma - (J)a eller (N)ej?
+INP n
+PRN Krälar djuret - (J)a eller (N)ej?
+INP j
+PRN Jag gissar att du tänkte på orm!
+PRN Hade jag rätt? (J)a eller (N)ej?
+INP j
+PRN Vad kul! :D :D :D
+PRN Jag känner till 3 djur.
+PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
+INP a
+PRN Tack för att du spelade!""".splitlines()
+    fakes = DjurFixture(expected)
+    djur(db, _input=fakes.fake_input, _print=fakes.fake_print)
+    # assert expected == fakes.get_actual()
+
+
+def test_approval_test_game_incorrect_guess():
+
+    db = [
+        'Kan djuret simma', 'j',
+        ['gädda'],
+        ['Krälar djuret', 'n', ['örn',], ['orm',]]
+    ]
+
+    expected = """\
+PRN Välkommen till GISSA DJUR!
+PRN --------------------------
+PRN Jag känner till 3 djur.
+PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
+INP spela
+PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!
+PRN När du tänkt klart, skriv (K)lart.
+INP klar
+PRN OK då kör vi...
+PRN Kan djuret simma - (J)a eller (N)ej?
+INP j
+PRN Jag gissar att du tänkte på gädda!
+PRN Hade jag rätt? (J)a eller (N)ej?
+INP nej
+PRN OK, men vilket djur tänkte du på då?
+INP padda
+PRN Kom på en fråga som innehåller ordet "djuret",
+PRN som skiljer padda och gädda åt. T.ex.
+PRN 'Kan djuret simma?'
+INP Har det ben?
+PRN Snälla ta med ordet "djuret" i frågan!
+PRN Försök igen:
+INP Har djuret ben?
+PRN OK, och för padda är svaret på frågan 'Har padda ben?' (J)a eller (N)ej?
+INP nej
+PRN Har jag fattat frågan och svaret rätt?
+PRN -- Har padda ben? ---
+PRN nej
+PRN (S)tämmer det eller blev det (F)el?
+PRN fel
+PRN Har jag fattat frågan och svaret rätt?
+PRN --- Har padda ben? ---
+PRN ja
+PRN (S)tämmer det eller blev det (F)el?
+INP s
+PRN Tack för att du lärt mig något om padda!
+PRN Jag känner till 4 djur.
+PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
+INP avsluta
+PRN Tack för att du spelade!\
+""".splitlines()
+    fakes = DjurFixture(expected)
+    djur(db, _input=fakes.fake_input, _print=fakes.fake_print)
+    # assert expected == fakes.get_actual()
+
+
+class DjurFixture:
 
     def __init__(self, expected_log):
         self.fake_answers = self.filter_inp(expected_log)
+        self.expected_log = list(expected_log)
+        self.logs = 0
         self.got = []
 
     def fake_input(self):
         next_answer = self.fake_answers.pop(0)
-        self.got.append(f"INP {next_answer}")
+        self.add_actual(f"INP {next_answer}")
         return next_answer
 
     def fake_print(self, msg):
-        self.got.append(f"PRN {msg}")
+        collect = f"PRN {msg}"
+        expected_print = self.expected_log[self.logs]
+        if collect != expected_print:
+            print(f"Failed at end of:")
+            print('\n'.join(self.expected_log[self.logs-3:self.logs]))
+            print(f"{expected_print} (got: {collect})")
+            raise Exception()
+        self.add_actual(collect)
+
+    def add_actual(self, msg):
+        self.logs += 1
+        self.got.append(msg)
 
     def get_actual(self):
         return self.got
@@ -48,7 +170,6 @@ class Fakes:
     @staticmethod
     def filter_inp(full_log):
         return [x.partition(' ')[2] for x in full_log if x.startswith('INP')]
-
 
 
 def test_filter_inp():
@@ -73,116 +194,14 @@ def test_filter_inp():
         "INP a",
         "PRN Tack för att du spelade!",
     ]
-    assert Fakes.filter_inp(log) == [
+    assert DjurFixture.filter_inp(log) == [
         'j', 'S', 'k', 'n', 'j', 'j', 'a'
     ]
 
 
-def test_approval_test_game_correct_guesses():
-
-    db = (
-        'Kan djuret simma', 'j',
-        ('gädda',),
-        ('Krälar djuret', 'n', ('örn',), ('orm',))
-    )
-
-    expected = [
-        "PRN Välkommen till GISSA DJUR!",
-        "PRN --------------------------",
-        "PRN Jag känner till 3 djur.",
-        "PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.",
-        "INP spela",
-        "PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!",
-        "PRN När du tänkt klart, skriv (K)lart.",
-        "INP q",
-        "PRN Va? Skriv k när du är klar!",
-        "INP K",
-        "PRN OK då kör vi...",
-        "PRN Kan djuret simma - (J)a eller (N)ej?",
-        "INP y",
-        "PRN Jag förstår bara j och n, svenska alltså!",
-        "PRN Kan djuret simma - (J)a eller (N)ej?",
-        "INP j",
-        "PRN Jag gissar att du tänkte på gädda!",
-        "PRN Hade jag rätt? (J)a eller (N)ej?",
-        "INP j",
-        "PRN Vad kul! :D :D :D",
-        "PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.",
-        "INP S",
-        "PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!",
-        "PRN När du tänkt klart, skriv (K)lart.",
-        "INP k",
-        "PRN OK då kör vi...",
-        "PRN Kan djuret simma - (J)a eller (N)ej?",
-        "INP n",
-        "PRN Krälar djuret - (J)a eller (N)ej?",
-        "INP j",
-        "PRN Jag gissar att du tänkte på orm!",
-        "PRN Hade jag rätt? (J)a eller (N)ej?",
-        "INP j",
-        "PRN Vad kul! :D :D :D",
-        "PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.",
-        "INP a",
-        "PRN Tack för att du spelade!",
-    ]
-    fakes = Fakes(expected)
-    djur(db, _input=fakes.fake_input, _print=fakes.fake_print)
-    assert expected == fakes.get_actual()
-
-
-def test_approval_test_game_incorrect_guess():
-
-    db = (
-        'Kan djuret simma', 'j',
-        ('gädda',),
-        ('Krälar djuret', 'n', ('örn',), ('orm',))
-    )
-
-    expected = [
-        "PRN Välkommen till GISSA DJUR!",
-        "PRN --------------------------",
-        "PRN Jag känner till 3 djur.",
-        "PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.",
-        "INP spela",
-        "PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!",
-        "PRN När du tänkt klart, skriv (K)lart.",
-        "INP klar",
-        "PRN OK då kör vi...",
-        "PRN Kan djuret simma - (J)a eller (N)ej?",
-        "INP y",
-        "PRN Jag förstår bara j och n, svenska alltså!",
-        "PRN Kan djuret simma - (J)a eller (N)ej?",
-        "INP j",
-        "PRN Jag gissar att du tänkte på gädda!",
-        "PRN Hade jag rätt? (J)a eller (N)ej?",
-        "INP j",
-        "PRN Vad kul! :D :D :D",
-        "PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.",
-        "INP S",
-        "PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!",
-        "PRN När du tänkt klart, skriv (K)lart.",
-        "INP k",
-        "PRN OK då kör vi...",
-        "PRN Kan djuret simma - (J)a eller (N)ej?",
-        "INP n",
-        "PRN Krälar djuret - (J)a eller (N)ej?",
-        "INP j",
-        "PRN Jag gissar att du tänkte på orm!",
-        "PRN Hade jag rätt? (J)a eller (N)ej?",
-        "INP j",
-        "PRN Vad kul! :D :D :D",
-        "PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.",
-        "INP a",
-        "PRN Tack för att du spelade!",
-    ]
-    fakes = Fakes(expected)
-    djur(db, _input=fakes.fake_input, _print=fakes.fake_print)
-    assert expected == fakes.get_actual()
-
-
 # önskvärda features |||
 ## svar med både "n" och "j" som vänster krok
-# uppdateringsalgoritm/interaktion
+## uppdateringsalgoritm/interaktion
 # djurformattering exvis "GÄDDA " --> "gädda"
 # frågeformattering exvis "kan den flyga?" -> "Kan den flyga"
 # persistens

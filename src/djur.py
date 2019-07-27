@@ -15,13 +15,17 @@ def djur(db, _input=None, _print=None):
         ans = _inp().lower()
         return ans[0] if len(ans) > 0 else ' '
 
-    antal = count(db)
+    def full_inp():
+        print(">>> ", end='')
+        return _inp()
+
 
     prn = _print or print
     prn("Välkommen till GISSA DJUR!")
     prn("--------------------------")
-    prn(f"Jag känner till {antal} djur.")
     while True:
+        antal = count(db)
+        prn(f"Jag känner till {antal} djur.")
         prn("(S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.")
         ans = inp()
         if ans == 'a':
@@ -51,6 +55,18 @@ def djur(db, _input=None, _print=None):
             ans = inp()
             if ans == 'j':
                 prn("Vad kul! :D :D :D")
+            else:
+                prn("OK, men vilket djur tänkte du på då?")
+                new_djur = full_inp()
+                prn(f"Kom på en fråga som skiljer {new_djur} och {djur} åt.")
+                prn("T.ex. 'Kan djuret simma?'")
+                new_question = full_inp()
+                prn(f"OK, och för {new_djur} är svaret på frågan '{new_question}' (J)a eller (N)ej?")
+                ans = inp()
+                prn(f"Tack för att du lärt mig något om {new_djur}!")
+                pos[:] = [new_question, ans, [new_djur], [djur]]
+                # from pprint import pprint
+                # pprint(db)
         else:
             prn(f"Jag förstår inte '{ans}'!")
 
