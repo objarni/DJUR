@@ -1,7 +1,7 @@
 # coding: utf-8
 from pprint import pprint
 
-from src.djur import djur
+from src.djur import djur, confirm
 
 
 def test_approval_test_no_actual_game():
@@ -22,11 +22,10 @@ PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
 INP a
 PRN Tack för att du spelade!""".splitlines()
 
-    fakes = DjurFixture(expected)
+    fakes = InteractionTest(expected)
     djur(('häst',), _input=fakes.fake_input, _print=fakes.fake_print)
     actual = fakes.get_actual()
-
-    # assert expected == actual
+    fakes.verify_interaction_consumed()
 
 
 def test_approval_test_game_correct_guesses():
@@ -51,8 +50,7 @@ INP K
 PRN OK då kör vi...
 PRN Kan djuret simma - (J)a eller (N)ej?
 INP y
-PRN Jag förstår bara j och n, svenska alltså!
-PRN Kan djuret simma - (J)a eller (N)ej?
+PRN Jag förstår bara svenska; (J)a eller (N)ej?
 INP j
 PRN Jag gissar att du tänkte på gädda!
 PRN Hade jag rätt? (J)a eller (N)ej?
@@ -77,12 +75,12 @@ PRN Jag känner till 3 djur.
 PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
 INP a
 PRN Tack för att du spelade!""".splitlines()
-    fakes = DjurFixture(expected)
+    fakes = InteractionTest(expected)
     djur(db, _input=fakes.fake_input, _print=fakes.fake_print)
-    # assert expected == fakes.get_actual()
+    fakes.verify_interaction_consumed()
 
 
-def test_approval_test_game_incorrect_guess():
+def _test_approval_test_game_incorrect_guess():
 
     db = [
         'Kan djuret simma', 'j',
@@ -107,17 +105,17 @@ PRN Hade jag rätt? (J)a eller (N)ej?
 INP nej
 PRN OK, men vilket djur tänkte du på då?
 INP padda
-PRN Kom på en fråga som innehåller ordet "djuret",
-PRN som skiljer padda och gädda åt. T.ex.
-PRN 'Kan djuret simma?'
+PRN Kom på en fråga som innehåller ordet 'djuret',
+PRN som skiljer padda och gädda åt.
+PRN T.ex. 'Kan djuret simma?'
 INP Har det ben?
-PRN Snälla ta med ordet "djuret" i frågan!
+PRN Snälla ta med ordet 'djuret' i frågan!
 PRN Försök igen:
 INP Har djuret ben?
 PRN OK, och för padda är svaret på frågan 'Har padda ben?' (J)a eller (N)ej?
 INP nej
 PRN Har jag fattat frågan och svaret rätt?
-PRN -- Har padda ben? ---
+PRN --- Har padda ben? ---
 PRN nej
 PRN (S)tämmer det eller blev det (F)el?
 PRN fel
@@ -132,12 +130,28 @@ PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
 INP avsluta
 PRN Tack för att du spelade!\
 """.splitlines()
-    fakes = DjurFixture(expected)
+    fakes = InteractionTest(expected)
     djur(db, _input=fakes.fake_input, _print=fakes.fake_print)
-    # assert expected == fakes.get_actual()
+    fakes.verify_interaction_consumed()
 
 
-class DjurFixture:
+def test_confirm_interaction():
+    expected = """\
+INP y
+PRN Jag förstår bara svenska; (J)a eller (N)ej?
+INP no""".splitlines()
+    fakes = InteractionTest(expected)
+    assert False == confirm(_input=fakes.fake_input, _print=fakes.fake_print)
+    fakes.verify_interaction_consumed()
+
+    expected = """\
+INP Ja""".splitlines()
+    fakes = InteractionTest(expected)
+    assert True == confirm(_input=fakes.fake_input, _print=fakes.fake_print)
+    fakes.verify_interaction_consumed()
+
+
+class InteractionTest:
 
     def __init__(self, expected_log):
         self.fake_answers = self.filter_inp(expected_log)
@@ -167,6 +181,11 @@ class DjurFixture:
     def get_actual(self):
         return self.got
 
+    def verify_interaction_consumed(self):
+        if not len(self.got) == len(self.expected_log):
+            print(f"Too short log produced, e.g these lines were expected")
+            print('\n'.join(self.expected_log[self.logs:self.logs+3]))
+
     @staticmethod
     def filter_inp(full_log):
         return [x.partition(' ')[2] for x in full_log if x.startswith('INP')]
@@ -194,7 +213,7 @@ def test_filter_inp():
         "INP a",
         "PRN Tack för att du spelade!",
     ]
-    assert DjurFixture.filter_inp(log) == [
+    assert InteractionTest.filter_inp(log) == [
         'j', 'S', 'k', 'n', 'j', 'j', 'a'
     ]
 
