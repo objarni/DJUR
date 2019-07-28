@@ -143,6 +143,33 @@ def save(db):
         print(f"Kunde inte spara filen {DBPATH} :(")
 
 
+def dfs(db, cb):
+    cb(db)
+    if len(db) == 4:
+        dfs(db[2], cb)
+        dfs(db[3], cb)
+
+
+def dotgraph(db):
+    """Return a DOT compatible string representation of db"""
+    labels = []
+    dfs(db, lambda node: labels.append(node[0]))
+    lbls = [f'n{num} [label="{s}"];\n' for (num, s) in enumerate(labels)]
+    print(labels)
+    edges = []
+    def visit_node(node):
+        if len(node) == 4:
+            parent_ix = labels.index(node[0])
+            lchild_ix = labels.index(node[2][0])
+            rchild_ix = labels.index(node[3][0])
+            edges.append((parent_ix, lchild_ix))
+            edges.append((parent_ix, rchild_ix))
+    dfs(db, visit_node)
+    edges = [f'n{parent} -> n{child};\n' for (parent, child) in edges]
+    print(edges)
+    return "digraph djur {\n" + ''.join(lbls) + ''.join(edges) + "}"
+
+
 if __name__ == '__main__':
     print("\n" * 100)
     try:

@@ -4,12 +4,13 @@ from pathlib import Path
 from pprint import pprint
 
 from src.djur import (
-    djur,
     confirm,
-    format_animal,
-    format_question,
+    djur,
+    dotgraph,
     find_leaves,
     find_nodes,
+    format_animal,
+    format_question,
 )
 
 
@@ -312,7 +313,28 @@ Krälar djuret?
 """.splitlines()
     assert formatted_questions == sorted(format_question(x) for x in raw_questions)
 
-
+def test_dotgraph():
+    db = [
+        'Kan djuret simma', True,   #q1
+        ['gädda'],   # a1
+        ['Krälar djuret', False, ['örn'], ['orm']] #q2, a2, a3
+    ]
+    #  Skiss:
+    #     q1
+    #  a1    q2
+    #       a2 a3
+    # print(dotgraph(db))
+    assert dotgraph(db) == """\
+digraph djur {
+n0 [label="Kan djuret simma"];
+n1 [label="gädda"];
+n2 [label="Krälar djuret"];
+n3 [label="örn"];
+n4 [label="orm"];
+n0 -> n1;
+n0 -> n2;
+n2 -> n3;
+n2 -> n4;
+}"""
 # önskvärda features |||
-# frågeformattering exvis "kan den flyga?" -> "Kan den flyga"
-# persistens
+# --graph option
