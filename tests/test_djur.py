@@ -4,6 +4,15 @@ from pprint import pprint
 from src.djur import djur, confirm
 
 
+def run_session(db, fakes):
+    djur(
+        db,
+        _input=fakes.fake_input,
+        _print=fakes.fake_print,
+        _save_db=fakes.fake_save,
+    )
+
+
 def test_approval_test_no_actual_game():
 
     expected = """\
@@ -23,18 +32,17 @@ INP a
 PRN Tack för att du spelade!""".splitlines()
 
     fakes = InteractionTest(expected)
-    djur(('häst',), _input=fakes.fake_input, _print=fakes.fake_print)
-    actual = fakes.get_actual()
+    run_session(['häst'], fakes)
     fakes.verify_interaction_consumed()
 
 
 def test_approval_test_game_correct_guesses():
 
-    db = (
+    db = [
         'Kan djuret simma', True,
-        ('gädda',),
-        ('Krälar djuret', False, ('örn',), ('orm',))
-    )
+        ['gädda'],
+        ['Krälar djuret', False, ['örn'], ['orm']]
+    ]
 
     expected = """\
 PRN Välkommen till GISSA DJUR!
@@ -76,7 +84,7 @@ PRN (S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.
 INP a
 PRN Tack för att du spelade!""".splitlines()
     fakes = InteractionTest(expected)
-    djur(db, _input=fakes.fake_input, _print=fakes.fake_print)
+    run_session(db, fakes)
     fakes.verify_interaction_consumed()
 
 
@@ -132,7 +140,7 @@ INP avsluta
 PRN Tack för att du spelade!\
 """.splitlines()
     fakes = InteractionTest(expected)
-    djur(db, _input=fakes.fake_input, _print=fakes.fake_print)
+    run_session(db, fakes)
     fakes.verify_interaction_consumed()
 
 
@@ -142,13 +150,13 @@ INP y
 PRN Jag förstår bara svenska; (J)a eller (N)ej?
 INP no""".splitlines()
     fakes = InteractionTest(expected)
-    assert False == confirm(_input=fakes.fake_input, _print=fakes.fake_print)
+    assert confirm(_input=fakes.fake_input, _print=fakes.fake_print) is False
     fakes.verify_interaction_consumed()
 
     expected = """\
 INP Ja""".splitlines()
     fakes = InteractionTest(expected)
-    assert True == confirm(_input=fakes.fake_input, _print=fakes.fake_print)
+    assert confirm(_input=fakes.fake_input, _print=fakes.fake_print) is True
     fakes.verify_interaction_consumed()
 
 
@@ -164,6 +172,9 @@ class InteractionTest:
         next_answer = self.fake_answers.pop(0)
         self.add_actual(f"INP {next_answer}")
         return next_answer
+
+    def fake_save(self, db):
+        pass
 
     def fake_print(self, msg):
         collect = f"PRN {msg}"
@@ -219,8 +230,6 @@ PRN Tack för att du spelade!""".splitlines()
 
 
 # önskvärda features |||
-## svar med både "n" och "j" som vänster krok
-## uppdateringsalgoritm/interaktion
 # djurformattering exvis "GÄDDA " --> "gädda"
 # frågeformattering exvis "kan den flyga?" -> "Kan den flyga"
 # persistens
