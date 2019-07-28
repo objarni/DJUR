@@ -39,14 +39,15 @@ def djur(db, _input=None, _print=None, _save_db=None):
             pos = db
             # Questions are 4 length tuples!
             while len(pos) == 4:
-                prn(f"{pos[0]} - (J)a eller (N)ej?")
+                question = format_question(pos[0])
+                prn(f"{question} Svara med (J)a eller (N)ej.")
                 go_left = confirm(full_inp, prn)
                 go_left = go_left if pos[1] else not go_left
                 if go_left:
                     pos = pos[2]
                 else:
                     pos = pos[3]
-            djur = pos[0]
+            djur = format_animal(pos[0])
             prn(f"Jag gissar att du tänkte på {djur}!")
             prn("Hade jag rätt? (J)a eller (N)ej?")
             if confirm(full_inp, prn):
@@ -58,7 +59,7 @@ def djur(db, _input=None, _print=None, _save_db=None):
                 prn(f"som skiljer {new_djur} och {djur} åt.")
                 prn("T.ex. 'Kan djuret simma?'")
                 while True:
-                    new_question = full_inp()
+                    new_question = format_question(full_inp())
                     if 'djuret' not in new_question:
                         prn("Snälla ta med ordet 'djuret' i frågan!")
                         prn("Försök igen:")

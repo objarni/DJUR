@@ -65,7 +65,7 @@ INP q
 PRN Va? Skriv k när du är klar!
 INP K
 PRN OK då kör vi...
-PRN Kan djuret simma - (J)a eller (N)ej?
+PRN Kan djuret simma? Svara med (J)a eller (N)ej.
 INP y
 PRN Jag förstår bara svenska; (J)a eller (N)ej?
 INP j
@@ -80,9 +80,9 @@ PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!
 PRN När du tänkt klart, skriv (K)lart.
 INP k
 PRN OK då kör vi...
-PRN Kan djuret simma - (J)a eller (N)ej?
+PRN Kan djuret simma? Svara med (J)a eller (N)ej.
 INP n
-PRN Krälar djuret - (J)a eller (N)ej?
+PRN Krälar djuret? Svara med (J)a eller (N)ej.
 INP j
 PRN Jag gissar att du tänkte på orm!
 PRN Hade jag rätt? (J)a eller (N)ej?
@@ -115,7 +115,7 @@ PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!
 PRN När du tänkt klart, skriv (K)lart.
 INP klar
 PRN OK då kör vi...
-PRN Kan djuret simma - (J)a eller (N)ej?
+PRN Kan djuret simma? Svara med (J)a eller (N)ej.
 INP j
 PRN Jag gissar att du tänkte på gädda!
 PRN Hade jag rätt? (J)a eller (N)ej?
@@ -222,9 +222,9 @@ PRN Tänk på ett djur, så ska jag gissa vilket du tänker på!
 PRN När du tänkt klart, skriv (K)lart.
 INP k
 PRN OK då kör vi...
-PRN Kan djuret simma - (J)a eller (N)ej?
+PRN Kan djuret simma? Svara med (J)a eller (N)ej.
 INP n
-PRN Krälar djuret - (J)a eller (N)ej?
+PRN Krälar djuret? Svara med (J)a eller (N)ej.
 INP j
 PRN Jag gissar att du tänkte på orm!
 PRN Hade jag rätt? (J)a eller (N)ej?
