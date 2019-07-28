@@ -1,7 +1,7 @@
 # coding: utf-8
 from pprint import pprint
 
-from src.djur import djur, confirm
+from src.djur import djur, confirm, find_leaves
 
 
 def run_session(db, fakes):
@@ -228,6 +228,10 @@ PRN Tack för att du spelade!""".splitlines()
         'j', 'S', 'k', 'n', 'j', 'j', 'a'
     ]
 
+
+def test_autoformatting():
+    testdb = Path('testdata/djur.json')
+    assert ['häst', 'gädda'] == find_leaves(testdb)
 
 # önskvärda features |||
 # djurformattering exvis "GÄDDA " --> "gädda"
