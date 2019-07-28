@@ -3,7 +3,12 @@ import json
 from pathlib import Path
 from pprint import pprint
 
-from src.djur import djur, confirm, find_leaves
+from src.djur import (
+    djur,
+    confirm,
+    format_animal,
+    find_leaves,
+)
 
 
 def run_session(db, fakes):
@@ -234,7 +239,7 @@ PRN Tack för att du spelade!""".splitlines()
 def test_autoformatting():
     testdb_path = Path().absolute() / 'tests/testdata/djur.json'
     testdb = json.loads(testdb_path.read_text())
-    assert """\
+    raw_animals = """\
 Padda
 Schimpans
 blå val
@@ -248,8 +253,25 @@ mus
 orm
 skölpadda
 varg
+örn""".splitlines()
+    assert raw_animals == sorted(list(find_leaves(testdb)))
+    formatted_animals = """\
+blå val
+fiskmås
+gädda
+hund
+häst
+igelkott
+katt
+mus
+orm
+padda
+schimpans
+skölpadda
+varg
 örn
-""".splitlines() == sorted(list(find_leaves(testdb)))
+""".splitlines()
+    assert formatted_animals == sorted(format_animal(x) for x in raw_animals)
 
 # önskvärda features |||
 # djurformattering exvis "GÄDDA " --> "gädda"

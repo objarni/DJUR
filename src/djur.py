@@ -6,31 +6,6 @@ import pathlib
 DBPATH = 'djur.json'
 
 
-def find_leaves(db):
-    if len(db) == 1:
-        yield db[0]
-    else:
-        for leaf in find_leaves(db[2]):
-            yield leaf
-        for leaf in find_leaves(db[3]):
-            yield leaf
-
-
-def count(db):
-    return len(list(find_leaves(db)))
-
-
-def swedish_bool(b):
-    return 'ja' if b else 'nej'
-
-
-def save(db):
-    try:
-        pathlib.Path(DBPATH).write_text(json.dumps(db, indent=2))
-    except:
-        print(f"Kunde inte spara filen {DBPATH} :(")
-
-
 def djur(db, _input=None, _print=None, _save_db=None):
     prn = _print or print
     _inp = _input or input
@@ -119,6 +94,35 @@ def confirm(_input=input, _print=print):
             return ans[0] == 'j'
         else:
             _print("Jag förstår bara svenska; (J)a eller (N)ej?")
+
+
+def find_leaves(db):
+    if len(db) == 1:
+        yield db[0]
+    else:
+        for leaf in find_leaves(db[2]):
+            yield leaf
+        for leaf in find_leaves(db[3]):
+            yield leaf
+
+
+def format_animal(a):
+    return a.lower().strip()
+
+
+def count(db):
+    return len(list(find_leaves(db)))
+
+
+def swedish_bool(b):
+    return 'ja' if b else 'nej'
+
+
+def save(db):
+    try:
+        pathlib.Path(DBPATH).write_text(json.dumps(db, indent=2))
+    except:
+        print(f"Kunde inte spara filen {DBPATH} :(")
 
 
 if __name__ == '__main__':
