@@ -1,5 +1,5 @@
 [
-  "Kan djuret simma",
+  "Lever djuret under vatten?",
   true,
   [
     "Kan djuret hoppa?",
@@ -26,7 +26,14 @@
             "haj"
           ],
           [
-            "g\u00e4dda"
+            "br\u00e4ner djuret m\u00e4niskor?",
+            true,
+            [
+              "manet"
+            ],
+            [
+              "g\u00e4dda"
+            ]
           ]
         ]
       ]
@@ -54,7 +61,14 @@
                 "zebra"
               ],
               [
-                "kanin"
+                "har djuret l\u00e5ng hals?",
+                true,
+                [
+                  "giraf"
+                ],
+                [
+                  "kanin"
+                ]
               ]
             ],
             [
@@ -96,11 +110,25 @@
               "mus"
             ],
             [
-              "katt"
+              "\u00e4r djuret likt m\u00e4niskor?",
+              true,
+              [
+                ""
+              ],
+              [
+                "katt"
+              ]
             ]
           ],
           [
-            "Schimpans"
+            "\u00e4ter djuret bambu?",
+            true,
+            [
+              "panda"
+            ],
+            [
+              "Schimpans"
+            ]
           ]
         ]
       ],
@@ -108,7 +136,14 @@
         "flyter djuret p\u00e5 vatten?",
         true,
         [
-          "fiskm\u00e5s"
+          "\u00e4r djuret iriterande f\u00f6r m\u00e4niskor?",
+          false,
+          [
+            "svan"
+          ],
+          [
+            "fiskm\u00e5s"
+          ]
         ],
         [
           "\u00f6rn"
