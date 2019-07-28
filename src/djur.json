@@ -20,7 +20,14 @@
           "bl\u00e5 val"
         ],
         [
-          "g\u00e4dda"
+          "\u00e4r djuret farligt f\u00f6r m\u00e4siskor?",
+          true,
+          [
+            "haj"
+          ],
+          [
+            "g\u00e4dda"
+          ]
         ]
       ]
     ]
@@ -41,7 +48,14 @@
             "kan man rida p\u00e5 djuret?",
             false,
             [
-              "kanin"
+              "har djuret render?",
+              true,
+              [
+                "zebra"
+              ],
+              [
+                "kanin"
+              ]
             ],
             [
               "h\u00e4st"
@@ -60,7 +74,14 @@
                 "igelkott"
               ],
               [
-                "varg"
+                "lever djuret i afrika?",
+                true,
+                [
+                  "lejon"
+                ],
+                [
+                  "varg"
+                ]
               ]
             ]
           ]
