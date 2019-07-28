@@ -53,7 +53,7 @@ def djur(db, _input=None, _print=None, _save_db=None):
                 prn("Vad kul! :D :D :D")
             else:
                 prn("OK, men vilket djur tänkte du på då?")
-                new_djur = full_inp()
+                new_djur = format_animal(full_inp())
                 prn(f"Kom på en fråga som innehåller ordet 'djuret',")
                 prn(f"som skiljer {new_djur} och {djur} åt.")
                 prn("T.ex. 'Kan djuret simma?'")
@@ -106,8 +106,25 @@ def find_leaves(db):
             yield leaf
 
 
+def find_nodes(db):
+    if len(db) == 4:
+        yield db[0]
+        for node in find_nodes(db[2]):
+            yield node
+        for node in find_nodes(db[3]):
+            yield node
+
+
 def format_animal(a):
     return a.lower().strip()
+
+
+def format_question(q):
+    words = q.split()
+    q = words[0].title() + ' ' + ' '.join(words[1:])
+    if not q.endswith('?'):
+        q = q + '?'
+    return q
 
 
 def count(db):

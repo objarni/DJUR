@@ -7,7 +7,9 @@ from src.djur import (
     djur,
     confirm,
     format_animal,
+    format_question,
     find_leaves,
+    find_nodes,
 )
 
 
@@ -236,7 +238,7 @@ PRN Tack för att du spelade!""".splitlines()
     ]
 
 
-def test_autoformatting():
+def test_format_animal():
     testdb_path = Path().absolute() / 'tests/testdata/djur.json'
     testdb = json.loads(testdb_path.read_text())
     raw_animals = """\
@@ -273,7 +275,44 @@ varg
 """.splitlines()
     assert formatted_animals == sorted(format_animal(x) for x in raw_animals)
 
+
+def test_format_questions():
+    testdb_path = Path().absolute() / 'tests/testdata/djur.json'
+    testdb = json.loads(testdb_path.read_text())
+    raw_questions = """\
+Kan djuret flyga?
+Kan djuret hoppa?
+Kan djuret simma
+Krälar djuret
+flyter djuret på vatten?
+har djuret ett skal på rygen?
+har djuret svans?
+har djuret tagar på rygen?
+kan djuret klättra?
+är djuret störe än en buss
+är djuret vilt?
+äter djuret hö?
+äter djuret ost?
+""".splitlines()
+    assert raw_questions == sorted(list(find_nodes(testdb)))
+    formatted_questions = """\
+Flyter djuret på vatten?
+Har djuret ett skal på rygen?
+Har djuret svans?
+Har djuret tagar på rygen?
+Kan djuret flyga?
+Kan djuret hoppa?
+Kan djuret klättra?
+Kan djuret simma?
+Krälar djuret?
+Är djuret störe än en buss?
+Är djuret vilt?
+Äter djuret hö?
+Äter djuret ost?
+""".splitlines()
+    assert formatted_questions == sorted(format_question(x) for x in raw_questions)
+
+
 # önskvärda features |||
-# djurformattering exvis "GÄDDA " --> "gädda"
 # frågeformattering exvis "kan den flyga?" -> "Kan den flyga"
 # persistens
