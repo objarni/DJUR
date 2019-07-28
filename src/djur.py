@@ -6,11 +6,18 @@ import pathlib
 DBPATH = 'djur.json'
 
 
-def count(db):
+def find_leaves(db):
     if len(db) == 1:
-        return 1
+        yield db[0]
     else:
-        return count(db[2]) + count(db[3])
+        for leaf in find_leaves(db[2]):
+            yield leaf
+        for leaf in find_leaves(db[3]):
+            yield leaf
+
+
+def count(db):
+    return len(list(find_leaves))
 
 
 def swedish_bool(b):
