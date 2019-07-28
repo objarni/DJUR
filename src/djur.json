@@ -2,7 +2,28 @@
   "Kan djuret simma",
   true,
   [
-    "g\u00e4dda"
+    "Kan djuret hoppa?",
+    true,
+    [
+      "Padda"
+    ],
+    [
+      "har djuret ett skal p\u00e5 rygen?",
+      true,
+      [
+        "sk\u00f6lpadda"
+      ],
+      [
+        "\u00e4r djuret st\u00f6re \u00e4n en buss",
+        true,
+        [
+          "bl\u00e5 val"
+        ],
+        [
+          "g\u00e4dda"
+        ]
+      ]
+    ]
   ],
   [
     "Kr\u00e4lar djuret",
@@ -11,10 +32,66 @@
       "Kan djuret flyga?",
       false,
       [
-        "Schimpans"
+        "kan djuret kl\u00e4ttra?",
+        false,
+        [
+          "\u00e4ter djuret h\u00f6?",
+          true,
+          [
+            "kan man rida p\u00e5 djuret?",
+            false,
+            [
+              "kanin"
+            ],
+            [
+              "h\u00e4st"
+            ]
+          ],
+          [
+            "\u00e4r djuret vilt?",
+            false,
+            [
+              "hund"
+            ],
+            [
+              "har djuret tagar p\u00e5 rygen?",
+              true,
+              [
+                "igelkott"
+              ],
+              [
+                "varg"
+              ]
+            ]
+          ]
+        ],
+        [
+          "har djuret svans?",
+          true,
+          [
+            "\u00e4ter djuret ost?",
+            true,
+            [
+              "mus"
+            ],
+            [
+              "katt"
+            ]
+          ],
+          [
+            "Schimpans"
+          ]
+        ]
       ],
       [
-        "\u00f6rn"
+        "flyter djuret p\u00e5 vatten?",
+        true,
+        [
+          "fiskm\u00e5s"
+        ],
+        [
+          "\u00f6rn"
+        ]
       ]
     ],
     [
