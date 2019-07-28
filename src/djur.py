@@ -3,6 +3,9 @@ import json
 import pathlib
 
 
+DBPATH = 'djur.json'
+
+
 def count(db):
     if len(db) == 1:
         return 1
@@ -14,8 +17,17 @@ def swedish_bool(b):
     return 'ja' if b else 'nej'
 
 
-def djur(db, _input=None, _print=None):
+def save(db):
+    try:
+        pathlib.Path(DBPATH).write_text(json.dumps(db, indent=2))
+    except:
+        print(f"Kunde inte spara filen {DBPATH} :(")
+
+
+def djur(db, _input=None, _print=None, _save_db=None):
+    prn = _print or print
     _inp = _input or input
+    save_db = _save_db or save
 
     def inp():
         print(">>> ", end='')
@@ -26,8 +38,6 @@ def djur(db, _input=None, _print=None):
         print(">>> ", end='')
         return _inp()
 
-
-    prn = _print or print
     prn("Välkommen till GISSA DJUR!")
     prn("--------------------------")
     while True:
@@ -89,12 +99,8 @@ def djur(db, _input=None, _print=None):
 
                 prn(f"Tack för att du lärt mig något om djuret {new_djur}!")
                 pos[:] = [new_question, ans, [new_djur], [djur]]
-                # from pprint import pprint
-                # pprint(db)
-                try:
-                    pathlib.Path(DBPATH).write_text(json.dumps(db, indent=2))
-                except:
-                    print(f"Kunde inte spara filen {DBPATH} :(")
+
+                save_db(db)
         else:
             prn(f"Jag förstår inte '{ans}'!")
 
@@ -109,18 +115,13 @@ def confirm(_input=input, _print=print):
 
 
 if __name__ == '__main__':
-    DBPATH = 'djur.json'
     print("\n" * 100)
     try:
         db = json.loads(pathlib.Path(DBPATH).read_text())
     except:
         db = [
             'Kan djuret simma', True,
-            ['gädda',],
-            ['Krälar djuret', False, ['örn',], ['orm',]]
+            ['gädda'],
+            ['Krälar djuret', False, ['örn'], ['orm']]
         ]
     djur(db)
-    try:
-        pathlib.Path(DBPATH).write_text(json.dumps(db, indent=2))
-    except:
-        print(f"Kunde inte spara filen {DBPATH} :(")

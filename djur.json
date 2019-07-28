@@ -1,0 +1,24 @@
+[
+  "Kan djuret simma",
+  true,
+  [
+    "Har djuret ben?",
+    true,
+    [
+      "padda"
+    ],
+    [
+      "g\u00e4dda"
+    ]
+  ],
+  [
+    "Kr\u00e4lar djuret",
+    false,
+    [
+      "\u00f6rn"
+    ],
+    [
+      "orm"
+    ]
+  ]
+]
