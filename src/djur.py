@@ -17,7 +17,7 @@ def find_leaves(db):
 
 
 def count(db):
-    return len(list(find_leaves))
+    return len(list(find_leaves(db)))
 
 
 def swedish_bool(b):

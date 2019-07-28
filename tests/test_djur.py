@@ -1,4 +1,6 @@
 # coding: utf-8
+import json
+from pathlib import Path
 from pprint import pprint
 
 from src.djur import djur, confirm, find_leaves
@@ -230,8 +232,24 @@ PRN Tack för att du spelade!""".splitlines()
 
 
 def test_autoformatting():
-    testdb = Path('testdata/djur.json')
-    assert ['häst', 'gädda'] == find_leaves(testdb)
+    testdb_path = Path().absolute() / 'tests/testdata/djur.json'
+    testdb = json.loads(testdb_path.read_text())
+    assert """\
+Padda
+Schimpans
+blå val
+fiskmås
+gädda
+hund
+häst
+igelkott
+katt
+mus
+orm
+skölpadda
+varg
+örn
+""".splitlines() == sorted(list(find_leaves(testdb)))
 
 # önskvärda features |||
 # djurformattering exvis "GÄDDA " --> "gädda"
