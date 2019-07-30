@@ -32,7 +32,14 @@
               "manet"
             ],
             [
-              "g\u00e4dda"
+              "Har djuret en fena?",
+              true,
+              [
+                "delfin"
+              ],
+              [
+                "g\u00e4dda"
+              ]
             ]
           ]
         ]
@@ -94,7 +101,14 @@
                   "lejon"
                 ],
                 [
-                  "varg"
+                  "Har djuret en n\u00e4bb?",
+                  true,
+                  [
+                    "pingvin"
+                  ],
+                  [
+                    "varg"
+                  ]
                 ]
               ]
             ]
@@ -146,7 +160,14 @@
           ]
         ],
         [
-          "\u00f6rn"
+          "Har djuret n\u00e4bb?",
+          false,
+          [
+            "fj\u00e4ril"
+          ],
+          [
+            "\u00f6rn"
+          ]
         ]
       ]
     ],

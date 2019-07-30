@@ -180,4 +180,5 @@ if __name__ == '__main__':
             ['gädda'],
             ['Krälar djuret', False, ['örn'], ['orm']]
         ]
+    print(dotgraph(db))
     djur(db)
