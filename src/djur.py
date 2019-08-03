@@ -13,10 +13,10 @@ def save(db):
         print(f"Kunde inte spara filen {DBPATH} :(")
 
 
-def djur(db, _input=None, _print=None, _save_db=None):
-    prn = _print or print
-    _inp = _input or input
-    save_db = _save_db or save
+def djur(db, _input=input, _print=print, _save_db=save):
+    prn = _print
+    _inp = _input
+    save_db = _save_db
 
     def inp():
         print(">>> ", end='')
