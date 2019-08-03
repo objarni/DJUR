@@ -6,6 +6,13 @@ import pathlib
 DBPATH = 'djur.json'
 
 
+def save(db):
+    try:
+        pathlib.Path(DBPATH).write_text(json.dumps(db, indent=2))
+    except:
+        print(f"Kunde inte spara filen {DBPATH} :(")
+
+
 def djur(db, _input=None, _print=None, _save_db=None):
     prn = _print or print
     _inp = _input or input
@@ -134,13 +141,6 @@ def count(db):
 
 def swedish_bool(b):
     return 'ja' if b else 'nej'
-
-
-def save(db):
-    try:
-        pathlib.Path(DBPATH).write_text(json.dumps(db, indent=2))
-    except:
-        print(f"Kunde inte spara filen {DBPATH} :(")
 
 
 def dfs(db, cb):
