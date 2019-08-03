@@ -6,86 +6,91 @@ import pathlib
 DBPATH = 'djur.json'
 
 
-def djur(db, _input=None, _print=None, _save_db=None):
-    prn = _print or print
-    _inp = _input or input
-    save_db = _save_db or save
+def save(db):
+    try:
+        pathlib.Path(DBPATH).write_text(json.dumps(db, indent=2))
+    except:
+        print(f"Kunde inte spara filen {DBPATH} :(")
+
+
+def djur(db, _input=input, _print=print, _save_db=save):
 
     def inp():
         print(">>> ", end='')
-        ans = _inp().lower()
+        ans = _input().lower()
         return ans[0] if len(ans) > 0 else ' '
 
     def full_inp():
         print(">>> ", end='')
-        return _inp()
+        return _input()
 
-    prn("Välkommen till GISSA DJUR!")
-    prn("--------------------------")
+    _print("Välkommen till GISSA DJUR!")
+    _print("--------------------------")
     while True:
         antal = count(db)
-        prn(f"Jag känner till {antal} djur.")
-        prn("(S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.")
+        _print(f"Jag känner till {antal} djur.")
+        _print("(S)pela eller (A)vsluta? Tryck S eller A och sedan Enter.")
         ans = inp()
         if ans == 'a':
-            prn("Tack för att du spelade!")
+            _print("Tack för att du spelade!")
             return
         elif ans == 's':
-            prn("Tänk på ett djur, så ska jag gissa vilket du tänker på!")
-            prn("När du tänkt klart, skriv (K)lart.")
+            _print("Tänk på ett djur, så ska jag gissa vilket du tänker på!")
+            _print("När du tänkt klart, skriv (K)lart.")
             while inp() != 'k':
-                prn("Va? Skriv k när du är klar!")
-            prn("OK då kör vi...")
+                _print("Va? Skriv k när du är klar!")
+            _print("OK då kör vi...")
             pos = db
             # Questions are 4 length tuples!
             while len(pos) == 4:
                 question = format_question(pos[0])
-                prn(f"{question} Svara med (J)a eller (N)ej.")
-                go_left = confirm(full_inp, prn)
+                _print(f"{question} Svara med (J)a eller (N)ej.")
+                go_left = confirm(full_inp, _print)
                 go_left = go_left if pos[1] else not go_left
                 if go_left:
                     pos = pos[2]
                 else:
                     pos = pos[3]
             djur = format_animal(pos[0])
-            prn(f"Jag gissar att du tänkte på {djur}!")
-            prn("Hade jag rätt? (J)a eller (N)ej?")
-            if confirm(full_inp, prn):
-                prn("Vad kul! :D :D :D")
+            _print(f"Jag gissar att du tänkte på {djur}!")
+            _print("Hade jag rätt? (J)a eller (N)ej?")
+            if confirm(full_inp, _print):
+                _print("Vad kul! :D :D :D")
             else:
-                prn("OK, men vilket djur tänkte du på då?")
+                _print("OK, men vilket djur tänkte du på då?")
                 new_djur = format_animal(full_inp())
-                prn(f"Kom på en fråga som innehåller ordet 'djuret',")
-                prn(f"som skiljer {new_djur} och {djur} åt.")
-                prn("T.ex. 'Kan djuret simma?'")
+                _print(f"Kom på en fråga som innehåller ordet 'djuret',")
+                _print(f"som skiljer {new_djur} och {djur} åt.")
+                _print("T.ex. 'Kan djuret simma?'")
                 while True:
                     new_question = format_question(full_inp())
                     if 'djuret' not in new_question:
-                        prn("Snälla ta med ordet 'djuret' i frågan!")
-                        prn("Försök igen:")
+                        _print("Snälla ta med ordet 'djuret' i frågan!")
+                        _print("Försök igen:")
                     else:
                         break
                 readable_question = new_question.replace("djuret", new_djur)
-                prn(f"OK, och för {new_djur} är svaret på frågan '{readable_question}' (J)a eller (N)ej?")
-                ans = confirm(full_inp, prn)
+                _print(
+                    f"OK, och för {new_djur} är svaret på frågan '{readable_question}' (J)a eller (N)ej?")
+                ans = confirm(full_inp, _print)
                 while True:
-                    prn("Denna fråga lär jag mig då:")
-                    prn(f"  {readable_question}")
-                    prn(f"  Rätt svar: {swedish_bool(ans)}")
-                    prn("Ser det rätt ut?")
-                    yes = confirm(full_inp, prn)
+                    _print("Denna fråga lär jag mig då:")
+                    _print(f"  {readable_question}")
+                    _print(f"  Rätt svar: {swedish_bool(ans)}")
+                    _print("Ser det rätt ut?")
+                    yes = confirm(full_inp, _print)
                     if yes:
                         break
                     else:
-                        prn("Hmm, tvärtom alltså?")
+                        _print("Hmm, tvärtom alltså?")
                         ans = not ans
 
-                prn(f"Tack för att du lärt mig något om djuret {new_djur}!")
+                _print(f"Tack för att du lärt mig något om djuret {new_djur}!")
                 pos[:] = [new_question, ans, [new_djur], [djur]]
 
-                save_db(db)
+                _save_db(db)
         else:
-            prn(f"Jag förstår inte '{ans}'!")
+            _print(f"Jag förstår inte '{ans}'!")
 
 
 def confirm(_input=input, _print=print):
@@ -134,13 +139,6 @@ def count(db):
 
 def swedish_bool(b):
     return 'ja' if b else 'nej'
-
-
-def save(db):
-    try:
-        pathlib.Path(DBPATH).write_text(json.dumps(db, indent=2))
-    except:
-        print(f"Kunde inte spara filen {DBPATH} :(")
 
 
 def dfs(db, cb):
